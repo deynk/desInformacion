@@ -6,6 +6,7 @@ plugins {
 
 group = "com.example"
 version = "1.0.0-SNAPSHOT"
+val ktor_version = "2.3.12"
 
 application {
     mainClass = "io.ktor.server.netty.EngineMain"
@@ -26,11 +27,16 @@ dependencies {
     implementation(ktorLibs.server.statusPages)
     implementation(ktorLibs.server.thymeleaf)
     implementation(libs.exposed.core)
-    implementation(libs.exposed.r2dbc)
     implementation(libs.flaxoos.ktor.server.rateLimiting)
-    implementation(libs.h2database.h2)
-    implementation(libs.h2database.r2dbc)
     implementation(libs.logback.classic)
+
+    implementation("org.mariadb.jdbc:mariadb-java-client:3.4.1")
+    implementation(libs.exposed.jdbc)
+    implementation("org.mindrot:jbcrypt:0.4")
+    implementation("com.auth0:java-jwt:4.4.0")
+
+    implementation("io.ktor:ktor-server-auth:${ktor_version}")
+    implementation("io.ktor:ktor-server-auth-jwt:${ktor_version}")
 
     testImplementation(kotlin("test"))
     testImplementation(ktorLibs.server.testHost)

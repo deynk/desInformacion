@@ -10,3 +10,4 @@ ktor:
       - com.example.RateLimitingKt.configureRateLimiting
       - com.example.ExposedKt.configureExposed
       - com.example.RoutingKt.configureRouting
+      - com.example.CallLoggingKt.configureCallLogging

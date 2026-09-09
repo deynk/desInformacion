@@ -3,17 +3,17 @@ package com.example
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.server.thymeleaf.Thymeleaf
 import io.ktor.server.thymeleaf.ThymeleafContent
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import io.ktor.server.http.content.*
 import io.ktor.server.sessions.*
 
 fun Application.configureRouting() {
     routing {
+        staticResources("/", "static")
         get("/") {
-            call.respondText("Hello, World!")
+            call.respondResource("static/index.html")
         }
+
         get("/html-thymeleaf") {
             call.respond(ThymeleafContent("index", mapOf("user" to ThymeleafUser(1, "user1"))))
         }

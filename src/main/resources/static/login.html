@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión | (des)INFORMACIÓN</title>
+  <meta name="description" content="Formulario para crear un usuario.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="register-page">
+  <header class="site-header">
+    <div class="header-inner header-inner-simple">
+      <a href="/" class="brand" aria-label="(des)INFORMACIÓN, portada">
+        <ns>(des)</ns>INFORMACIÓN
+      </a>
+    </div>
+  </header>
+
+  <main class="register-shell">
+    <section class="register-intro" aria-labelledby="registerTitle">
+      <p class="register-kicker">Acceso de colaboradores</p>
+      <h1 id="registerTitle">Iniciar sesión</h1>
+      <p>Inicie sesión para poder publicar noticias falsas.</p>
+      <p>
+        ¿No tienes una cuenta? Regístrate pulsando <a href="register.html">aquí</a>.
+      </p>
+    </section>
+
+    <section class="register-panel" aria-label="Formulario de acceso">
+      <form class="register-form" id="loginForm" novalidate>
+
+        <div class="field-group">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="Tu email" autocomplete="email" maxlength="320" required>
+        </div>
+
+        <div class="field-group">
+          <label for="password">Contraseña</label>
+          <input id="password" name="password" type="password" placeholder="Tu contraseña" min="8" max="20" required>
+        </div>
+
+        <button class="primary-action" type="submit">Iniciar sesión</button>
+        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-brand"><ns>(des)</ns>INFORMACIÓN</div>
+    <p>© <span id="year"></span> Ediciones para la desinformación. Ningun derecho reservado.</p>
+    <div class="footer-links">
+      <a href="#">Aviso legal</a>
+      <span>|</span>
+      <a href="#">Politica de privacidad</a>
+      <span>|</span>
+      <a href="#">Politica de cookies</a>
+    </div>
+  </footer>
+
+  <script src="login.js"></script>
+</body>
+</html>
