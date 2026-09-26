@@ -31,6 +31,22 @@ class DatabaseHelper {
         override val primaryKey = PrimaryKey(id)
     }
 
+    object News : Table() {
+        val id = long("id").autoIncrement()
+        val uuid = varchar("uuid", 255).uniqueIndex()
+
+        val title = varchar("title", 200)
+        val description = varchar("description", 500)
+        val body = mediumText("body")
+
+        val fakeDate = long("fake_date")
+        val createdAt = long("created_at").default(System.currentTimeMillis())
+
+        val fakeAuthor = varchar("fake_author", 255)
+        val userId = long("userId")
+        override val primaryKey = PrimaryKey(id)
+    }
+
     fun createConnection() : Database {
         return Database.connect(
             url = Values().dbUrl,
