@@ -37,6 +37,8 @@ dependencies {
 
     implementation("io.ktor:ktor-server-auth:${ktor_version}")
     implementation("io.ktor:ktor-server-auth-jwt:${ktor_version}")
+    implementation("io.ktor:ktor-server-sessions:${ktor_version}")
+    implementation("io.ktor:ktor-server-auth:${ktor_version}")
 
     testImplementation(kotlin("test"))
     testImplementation(ktorLibs.server.testHost)

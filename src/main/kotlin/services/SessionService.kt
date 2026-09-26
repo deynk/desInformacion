@@ -1,7 +1,6 @@
 package com.example.services
 
 import com.example.entities.Session
-import com.example.models.RegisterUserModel
 import com.example.models.UserModel
 import com.example.repositories.SessionRepository
 import com.example.utils.Auth
@@ -13,7 +12,7 @@ class SessionService(val database: Database) {
     private val logger = LoggerFactory.getLogger(this::class.java)
     private val sessionRepository = SessionRepository(database)
 
-    suspend fun createSession(user: UserModel): String {
+    suspend fun createSession(user: UserModel): Session {
         val newSession = Session(
             user.id,
             Security.encryptPassword(
@@ -22,6 +21,21 @@ class SessionService(val database: Database) {
         )
         val tokenHash = sessionRepository.save(newSession)
 
-        return newSession.tokenHash
+        return newSession
     }
+
+    suspend fun getByToken(token: String): Session? {
+        return sessionRepository.getByTokenHash(token)
+    }
+    suspend fun getByUserId(userId: Long): Session? {
+        return sessionRepository.getByUserId(userId)
+    }
+
+    /** Erases the expired sessions and returns a valid session */
+    suspend fun checkByUserId(userId: Long): Session? {
+        sessionRepository.expireByDateByUserId(userId)
+        return sessionRepository.getByUserId(userId)
+    }
+
+    suspend fun exists(token: String): Boolean = getByToken(token) != null
 }

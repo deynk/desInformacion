@@ -21,10 +21,11 @@ fun Application.configureRouting() {
         get("/json/kotlinx-serialization") {
             call.respond(mapOf("hello" to "world"))
         }
+        /*
         get("/session/increment") {
-            val session = call.sessions.get<MySession>() ?: MySession()
+            val session = call.sessions.get<SessionModel>() ?: SessionModel()
             call.sessions.set(session.copy(count = session.count + 1))
             call.respondText("Counter is ${session.count}. Refresh to increment.")
-        }
+        }*/
     }
 }
