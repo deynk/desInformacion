@@ -41,8 +41,14 @@ class SessionRepository(val database: Database) {
         Sessions.selectAll().where { Sessions.userId eq userId }.singleOrNull()?.toSession()
     }
 
-    suspend fun expireByDateByUserId(userId: Long) = suspendTransaction(database) {
-        Sessions.deleteWhere { Sessions.userId eq userId and (Sessions.expirationDate less Clock.System.now().toEpochMilliseconds()) }
+    /** Deletes all sessions from a user */
+    suspend fun deleteByUserId(userId: Long) = suspendTransaction(database) {
+        Sessions.deleteWhere { Sessions.userId eq userId }
+    }
+
+    /** Deletes a single session by its token **/
+    suspend fun deleteByToken(token: String) = suspendTransaction(database) {
+        Sessions.deleteWhere { Sessions.tokenHash eq token }
     }
 
     fun ResultRow.toSession(): Session {

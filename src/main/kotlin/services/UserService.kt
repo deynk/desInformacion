@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory
 
 
 class UserService(val database: Database) {
-    private val logger = LoggerFactory.getLogger(this::class.java)
     private val userRepository = UserRepository(database)
 
     suspend fun register(user: RegisterUserModel): Long {

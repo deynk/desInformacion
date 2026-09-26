@@ -16,6 +16,7 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.request.requireCookie
 import io.ktor.server.response.respond
+import io.ktor.server.response.respondRedirect
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
@@ -23,6 +24,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
+import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
 import java.lang.Thread.sleep
 
@@ -61,7 +63,6 @@ suspend fun Application.configureExposed() {
                     }
                 }
                 post("/login") {
-
                     val startTime = System.currentTimeMillis()
 
                     val loginModel = call.receive<LoginModel>()
@@ -75,7 +76,7 @@ suspend fun Application.configureExposed() {
 
                     // Busca si existe una sesión para este usuario
                     if (authenticated){
-                        val session = sessionService.checkByUserId(foundUser!!.id)
+                        val session = sessionService.getByUserId(foundUser!!.id)
                         if(session == null) {  // Si no existe, la crea
                             val newSession = sessionService.createSession(foundUser)
                             call.sessions.set("user_session", SessionModel(newSession.tokenHash))
@@ -94,18 +95,26 @@ suspend fun Application.configureExposed() {
                 }
 
 
-                /*
-                // Read user
-                get("/{id}") {
-                    val id = call.parameters["id"]?.toUInt() ?: throw IllegalArgumentException("Invalid ID")
-                    val user = userService.read(id)
-                    if (user != null) {
-                        call.respond(HttpStatusCode.OK, user)
-                    } else {
-                        call.respond(HttpStatusCode.NotFound)
+                authenticate {
+                    // Get the information of the user logged
+                    get("/me") {
+                        val sessionToken = call.sessions.get<SessionModel>()?.token!!
+                        val session = sessionService.getByToken(sessionToken)
+                        if(session == null){
+                            call.respondRedirect("/login.html")
+                            return@get
+                        }
+                        val user = userService.getById(session.userId)
+
+                        if (user != null) {
+                            call.respond (HttpStatusCode.OK, "${user.name} is already being logged in" )
+                        } else {
+                            call.respond(HttpStatusCode.NotFound)
+                        }
                     }
                 }
 
+                /*
                 // Update user
                 put("/{id}") {
                     val id = call.parameters["id"]?.toUInt() ?: throw IllegalArgumentException("Invalid ID")

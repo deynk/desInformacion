@@ -31,10 +31,8 @@ class SessionService(val database: Database) {
         return sessionRepository.getByUserId(userId)
     }
 
-    /** Erases the expired sessions and returns a valid session */
-    suspend fun checkByUserId(userId: Long): Session? {
-        sessionRepository.expireByDateByUserId(userId)
-        return sessionRepository.getByUserId(userId)
+    suspend fun getUserIdByTokenHash(tokenHash: String): Long {
+        return sessionRepository.getByTokenHash(tokenHash)?.userId ?: -1
     }
 
     suspend fun exists(token: String): Boolean = getByToken(token) != null

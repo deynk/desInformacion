@@ -23,11 +23,11 @@ class DatabaseHelper {
     object Sessions : Table() {
         val id = long("id").autoIncrement()
         val userId = reference("user_id", Users.id, ReferenceOption.CASCADE)
-        val tokenHash = varchar("token_hash", 255)
+        val tokenHash = varchar("token_hash", 255).uniqueIndex()
         val deviceName = varchar("device_name", 255)
         val creationDate = long("creation_date").default(System.currentTimeMillis())
         val lastLoginDate = long("last_login_date").nullable()
-        val expirationDate = long("expiration_date").default(System.currentTimeMillis() + Values().sessionExpirationTime)
+        val expirationDate = long("expiration_date").default(System.currentTimeMillis() + Values().sessionExpirationTime).index("expiration_date")
         override val primaryKey = PrimaryKey(id)
     }
 
