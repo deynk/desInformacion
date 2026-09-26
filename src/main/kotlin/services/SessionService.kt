@@ -9,7 +9,6 @@ import org.jetbrains.exposed.v1.jdbc.Database
 import org.slf4j.LoggerFactory
 
 class SessionService(val database: Database) {
-    private val logger = LoggerFactory.getLogger(this::class.java)
     private val sessionRepository = SessionRepository(database)
 
     suspend fun createSession(user: UserModel): Session {
@@ -37,4 +36,10 @@ class SessionService(val database: Database) {
 
     suspend fun exists(token: String): Boolean = getByToken(token) != null
     suspend fun isValid(token: String?): Boolean = sessionRepository.isValid(token)
+    suspend fun deleteByTokenHash(token: String): Int {
+        return sessionRepository.deleteByToken(token)
+    }
+    suspend fun deleteByUserId(userId: Long): Int {
+        return sessionRepository.deleteByUserId(userId)
+    }
 }

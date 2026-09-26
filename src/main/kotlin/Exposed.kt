@@ -43,11 +43,8 @@ suspend fun Application.configureExposed() {
         staticResources("/", "static")
         get("/") {
             val sessionToken = call.sessions.get<SessionModel>()?.token
-            Logger.warn("Session Token : $sessionToken")
             val isLoggedIn = sessionService.isValid(sessionToken)
-            Logger.warn("Session isLoggedIn : $isLoggedIn")
             call.respond(ThymeleafContent("index", mapOf("isLoggedIn" to isLoggedIn)))
-
         }
 
         route("/api") {
@@ -108,6 +105,9 @@ suspend fun Application.configureExposed() {
                     } else call.respond(HttpStatusCode.Unauthorized)
                 }
                 get("/logout"){
+                    call.sessions.get<SessionModel>()?.token?.let { token ->
+                        sessionService.deleteByTokenHash(token)
+                    }
                     call.sessions.clear<SessionModel>()
                     call.respondRedirect("/")
                 }
