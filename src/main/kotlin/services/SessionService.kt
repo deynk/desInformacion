@@ -36,4 +36,5 @@ class SessionService(val database: Database) {
     }
 
     suspend fun exists(token: String): Boolean = getByToken(token) != null
+    suspend fun isValid(token: String?): Boolean = sessionRepository.isValid(token)
 }

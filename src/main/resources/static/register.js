@@ -114,10 +114,10 @@ registerForm.addEventListener("submit", async (event) => {
       submitButton.disabled = false;
     }
     else{
-      //registerForm.reset();
+      registerForm.reset();
       setStatus(`Usuario creado correctamente. En 5 segundos te redirigiremos a la página principal.`, "success");
-      //await sleep(5000);
-      //window.location.href = "/index.html";
+      await sleep(5000);
+      window.location.href = "/index.html";
     }
 
   } catch (error) {

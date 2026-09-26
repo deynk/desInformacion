@@ -9,14 +9,16 @@ import io.ktor.server.sessions.*
 
 fun Application.configureRouting() {
     routing {
+        get("/index.html"){ call.respondRedirect("/") }
+        /*
         staticResources("/", "static")
         get("/") {
-            call.respondResource("static/index.html")
+            var isLoggedIn = false
+            call.respond(ThymeleafContent("index", mapOf("isLoggedIn" to isLoggedIn)))
+            //call.respondResource("static/index.html")
         }
+         */
 
-        get("/html-thymeleaf") {
-            call.respond(ThymeleafContent("index", mapOf("user" to ThymeleafUser(1, "user1"))))
-        }
         staticResources("/static", "static")
         get("/json/kotlinx-serialization") {
             call.respond(mapOf("hello" to "world"))

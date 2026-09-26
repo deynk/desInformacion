@@ -1,82 +1,73 @@
 <!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>(des)INFORMACIÓN — Noticias ficticias</title>
-  <meta name="description" content="Portada de noticias estilo periódico.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="user-menu-container">
-        <button class="icon-button registerUser-button" id="registerUser" aria-label="Menú de usuario" aria-expanded="false">
-          <svg viewBox="0 0 40 40" aria-hidden="true">
-              <circle cx="16" cy="16" fill="none" r="15" stroke="#000000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>(des)INFORMACIÓN — Noticias ficticias</title>
+    <meta name="description" content="Portada de noticias estilo periódico.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="user-menu-container">
+          <button class="icon-button registerUser-button" id="registerUser" aria-label="Menú de usuario" aria-expanded="false">
+            <svg viewBox="0 0 40 40" aria-hidden="true">
+                <circle cx="16" cy="16" fill="none" r="15" stroke="#000000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
 
-              <path d="M26,27L26,27   c0-5.523-4.477-10-10-10h0c-5.523,0-10,4.477-10,10v0" fill="none" stroke="#000000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+                <path d="M26,27L26,27   c0-5.523-4.477-10-10-10h0c-5.523,0-10,4.477-10,10v0" fill="none" stroke="#000000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
 
-              <circle cx="16" cy="11" fill="none" r="6" stroke="#000000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+                <circle cx="16" cy="11" fill="none" r="6" stroke="#000000" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+            </svg>
+          </button>
+
+          <div class="user-dropdown" id="userDropdown" >
+            <a href="login.html" class="dropdown-item item-logged-out" th:if="${!isLoggedIn}">Iniciar sesión</a>
+            <a href="register.html" class="dropdown-item item-logged-out" th:if="${!isLoggedIn}">Registrarse</a>
+            <a href="#" class="dropdown-item item-logged-in" th:if="${isLoggedIn}">Mi perfil</a>
+            <a href="/api/users/logout" class="dropdown-item item-logged-in" th:if="${isLoggedIn}">Cerrar sesión</a>
+          </div>
+        </div>
+
+        <a href="/" class="brand" aria-label="(des)INFORMACIÓN, portada">
+          <ns>(des)</ns>INFORMACIÓN
+        </a>
+
+        <button class="icon-button search-button" id="searchButton" aria-label="Buscar">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="10.8" cy="10.8" r="6.8"></circle>
+            <path d="M16 16l5 5"></path>
           </svg>
         </button>
-        <div class="user-dropdown" id="userDropdown">
-          <a href="login.html" class="dropdown-item item-logged-out">Iniciar sesión</a>
-          <a href="register.html" class="dropdown-item item-logged-out">Registrarse</a>
-          <a href="#" class="dropdown-item item-logged-in">Mi perfil</a>
-          <button type="button" class="dropdown-item item-logged-in" id="logoutBtn">Cerrar sesión</button>
-        </div>
       </div>
 
-      <a href="/" class="brand" aria-label="(des)INFORMACIÓN, portada">
-        <ns>(des)</ns>INFORMACIÓN
-      </a>
+      <nav class="main-nav" id="mainNav" aria-label="Secciones">
+        <a href="#" class="active">GENERAL</a>
+        <a href="#">ACTUALIDAD</a>
+        <a href="#">DEPORTES</a>
+        <a href="#">ECONOMÍA</a>
+        <a href="#">OPINIÓN</a>
+        <a href="#">CULTURA</a>
+        <a href="#">SOCIEDAD</a>
+        <a href="#">SUCESOS</a>
+      </nav>
 
-      <button class="icon-button search-button" id="searchButton" aria-label="Buscar">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="10.8" cy="10.8" r="6.8"></circle>
-          <path d="M16 16l5 5"></path>
-        </svg>
-      </button>
-    </div>
+      <form class="search-panel" id="searchPanel" role="search">
+        <label for="searchInput"></label><input id="searchInput" type="search" placeholder="Buscar noticias…" autocomplete="off">
+        <button type="submit">Buscar</button>
+      </form>
+    </header>
 
-    <nav class="main-nav" id="mainNav" aria-label="Secciones">
-      <a href="#" class="active">GENERAL</a>
-      <a href="#">ACTUALIDAD</a>
-      <a href="#">DEPORTES</a>
-      <a href="#">ECONOMÍA</a>
-      <a href="#">OPINIÓN</a>
-      <a href="#">CULTURA</a>
-      <a href="#">SOCIEDAD</a>
-      <a href="#">SUCESOS</a>
-    </nav>
+    <main class="page-shell">
+      <section class="news-column" id="newsList" aria-live="polite"></section>
+      <p class="empty-state" id="emptyState" hidden>No se han encontrado noticias.</p>
+    </main>
 
-    <form class="search-panel" id="searchPanel" role="search">
-      <label for="searchInput"></label><input id="searchInput" type="search" placeholder="Buscar noticias…" autocomplete="off">
-      <button type="submit">Buscar</button>
-    </form>
-  </header>
+    <footer th:replace="~{footer :: footer}"></footer>
 
-  <main class="page-shell">
-    <section class="news-column" id="newsList" aria-live="polite"></section>
-    <p class="empty-state" id="emptyState" hidden>No se han encontrado noticias.</p>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-brand"><ns>(des)</ns>INFORMACIÓN</div>
-    <p>© <span id="year"></span> Ediciones para la desinformación. Ningún derecho reservado.</p>
-    <div class="footer-links">
-      <a href="#">Aviso legal</a>
-      <span>|</span>
-      <a href="#">Política de privacidad</a>
-      <span>|</span>
-      <a href="#">Política de cookies</a>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

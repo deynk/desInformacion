@@ -9,7 +9,8 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 fun Application.configureThymeleaf() {
     install(Thymeleaf) {
         setTemplateResolver(ClassLoaderTemplateResolver().apply {
-            prefix = "templates/thymeleaf/"
+            //prefix = "templates/thymeleaf/"
+            prefix = "static/"
             suffix = ".html"
             characterEncoding = "utf-8"
         })

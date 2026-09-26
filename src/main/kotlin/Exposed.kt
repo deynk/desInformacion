@@ -1,5 +1,6 @@
 package com.example
 
+import com.example.entities.Session
 import com.example.helper.DatabaseHelper
 import com.example.helper.DatabaseHelper.Users.id
 import com.example.models.LoginModel
@@ -13,6 +14,7 @@ import io.ktor.http.Cookie
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
 import io.ktor.server.auth.authenticate
+import io.ktor.server.http.content.staticResources
 import io.ktor.server.request.receive
 import io.ktor.server.request.requireCookie
 import io.ktor.server.response.respond
@@ -24,8 +26,10 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.put
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
+import io.ktor.server.sessions.clear
 import io.ktor.server.sessions.get
 import io.ktor.server.sessions.sessions
+import io.ktor.server.thymeleaf.ThymeleafContent
 import java.lang.Thread.sleep
 
 suspend fun Application.configureExposed() {
@@ -36,6 +40,16 @@ suspend fun Application.configureExposed() {
     val sessionService = SessionService(database)
 
     routing {
+        staticResources("/", "static")
+        get("/") {
+            val sessionToken = call.sessions.get<SessionModel>()?.token
+            Logger.warn("Session Token : $sessionToken")
+            val isLoggedIn = sessionService.isValid(sessionToken)
+            Logger.warn("Session isLoggedIn : $isLoggedIn")
+            call.respond(ThymeleafContent("index", mapOf("isLoggedIn" to isLoggedIn)))
+
+        }
+
         route("/api") {
             //TODO: Eliminar esto en producción
             /** Elimina todas las tablas al buscar "localhost:8080/resetDB" */
@@ -92,6 +106,10 @@ suspend fun Application.configureExposed() {
                     if (authenticated) {
                         call.respond(HttpStatusCode.OK)
                     } else call.respond(HttpStatusCode.Unauthorized)
+                }
+                get("/logout"){
+                    call.sessions.clear<SessionModel>()
+                    call.respondRedirect("/")
                 }
 
 

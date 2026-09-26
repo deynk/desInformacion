@@ -71,7 +71,8 @@ loginForm.addEventListener("submit", async (event) => {
 
     switch (true) {
       case response.ok:
-        setStatus("Usuario existente.", "success");
+        //setStatus("Usuario existente.", "success");
+        window.location.href = "/";
         break;
 
       case response.status === 401:

@@ -34,11 +34,17 @@ class SessionRepository(val database: Database) {
         newRecord[Sessions.tokenHash]
     }
 
-    suspend fun getByTokenHash(tokenHash: String): Session? = suspendTransaction(database) {
+    suspend fun getByTokenHash(tokenHash: String?): Session? = suspendTransaction(database) {
+        if (tokenHash == null) return@suspendTransaction null
         Sessions.selectAll().where{ Sessions.tokenHash eq tokenHash }.singleOrNull()?.toSession()
     }
     suspend fun getByUserId(userId: Long): Session? = suspendTransaction(database) {
         Sessions.selectAll().where { Sessions.userId eq userId }.singleOrNull()?.toSession()
+    }
+
+    suspend fun isValid(token: String?): Boolean {
+        val session = getByTokenHash(token) ?: return false
+        return session.expirationDate > Clock.System.now().toEpochMilliseconds()
     }
 
     /** Deletes all sessions from a user */
